@@ -44,25 +44,25 @@ int main(int argc, char **argv){
 			do{ 						//while the user has not chosen 5 (quit)
 			 choice = getMenuOption();	//display menu store response
 			 switch(choice){  			//if response is 1,2,3,4,5 execute cases respectively and redisplay menu
-				case 3:
+				case 1:
 				printVowelConsFreq(stats);
 				break;
-				case 4:
+				case 2:
 				printWordCount(stats);
 				break;
-				case 5:
+				case 3:
 				printHistogram(stats);
 				printf("\n");
 				break;
-				case 6:
+				case 4:
 				stats = begin(stats);
 				break;
-				case 7:
+				case 5:
 				break; 									//if quit choice break the loop and go to print/return statement
 				default: 							    //else choice was invalid
 				printf("Invalid choice %d, Try again. \n", choice);
 			 	}	
-			} while (choice != 7);
+			} while (choice != 5);
 		printf("Exiting... \n"); 
 		return 0;										//exit cleanly
 	} 
