@@ -72,7 +72,7 @@ void printVowelConsFreq(WordStats st)
 	int total = st.vowelCount + st.consonantCount; //total letters will be sum of vowels and consonants
 	float vowFreq = (float) st.vowelCount/total;  //float cast to find frequencies
 	float consFreq = (float) st.consonantCount/total; //.2f will truncate a float to the hundred place
-	printf("Vowels = %d(%.2f%%), Consonants = %d(%.2f%%) , Total = %d\n",st.vowelCount, vowFreq, st.consonantCount, consFreq, total);
+	printf("Vowels = %d(%.2f%%), Consonants = %d(%.2f%%), Total = %d\n",st.vowelCount, vowFreq*100, st.consonantCount, consFreq*100, total);
 }
 
 /**

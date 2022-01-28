@@ -60,7 +60,7 @@ int main(int argc, char **argv){
 				case 5:
 				break; 									//if quit choice break the loop and go to print/return statement
 				default: 							    //else choice was invalid
-				printf("Invalid choice %d, Try again. \n", choice);
+				printf("Error: Unknown option %d. Try again\n", choice);
 			 	}	
 			} while (choice != 5);
 		printf("Exiting... \n"); 
