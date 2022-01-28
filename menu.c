@@ -5,6 +5,14 @@
  * @return int the option the user selected
  */
 int getMenuOption()
-{
-	// TODO
+{   
+    int response;
+	printf("*** WORDS STATS MENU *** \n");
+    printf("Enter 1 to print vowel and consonant frequency. \n");
+    printf("Enter 2 to print word count. \n");
+    printf("Enter 3 to print the histogram. \n");
+    printf("Enter 4 to return inputting more strings \n");
+    printf("Enter 5 to quit. \n");
+    scanf("%d", &response);
+    return response;
 }

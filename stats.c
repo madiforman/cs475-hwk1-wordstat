@@ -2,6 +2,7 @@
 #include "stats.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h> //used for helpful functions like isalpha and isspace
 
 /**
  * Initializes the statistics structure
@@ -9,9 +10,13 @@
  * @return an initialized WordStats struct 
  */
 WordStats initStats(WordStats st)
-{
-	// TODO initialize all fields in the st struct before returning it
-	return st;
+{	st.wordCount = 0; 	//all will begin at zero
+	st.consonantCount = 0;
+	st.vowelCount = 0;
+	for(int i = 0; i < 26; i++){
+	st.histo[i]=0;
+	}
+ 	return st;
 }
 
 /**
@@ -21,12 +26,21 @@ WordStats initStats(WordStats st)
  * @return an updated WordStats struct 
  */
 WordStats updateVowelCons(WordStats st, const char str[])
-{
-	// TODO - update the vowel and consonant count
-	//        in the st struct before returning it
-	return st;
+{ 	
+	int len = strlen(str);
+	for(int i = 0; i < len; i++) //pass through entire string
+	{
+	 if (str[i] == 'a' || str[i] == 'e' || str[i] == 'i' ||	//check for lowercase and uppercase vowels
+        str[i] == 'o' || str[i] == 'u' || str[i]=='A'||str[i]=='E'||str[i]=='I'||str[i]=='O'||str[i]=='U') {
+		 st.vowelCount++; 
+		}	
+	 else if (( (str[i] >= 'A' && str[i] <= 'Z')|| (str[i]>='A'+32 && str[i]<= 'Z'+32))) { //+32 ASCIIZ upper to lower conversion
+      st.consonantCount++;
+    }
+	} 
+return st;
 }
-
+	
 /**
  * Updates word count in the struct
  * @param st 
@@ -35,7 +49,17 @@ WordStats updateVowelCons(WordStats st, const char str[])
  */
 WordStats updateWordCount(WordStats st, const char str[])
 {
-	// TODO - update the word count in the st struct before returning it
+	int bool = 0; //used to keep track of if the char currently being looked at is a space
+	for(int i = 0; i < strlen(str); i++){
+		
+		if(isspace(str[i])){ //if it is, dont do anyhting (isspace is used because it will include things like \n and \t)
+			bool = 0;
+		} else if(bool == 0 && isalpha(str[i])){ //if it isnt, must be a new word increment count
+			st.wordCount++;
+			bool = 1;
+		}
+	
+	}
 	return st;
 }
 
@@ -45,7 +69,10 @@ WordStats updateWordCount(WordStats st, const char str[])
  */
 void printVowelConsFreq(WordStats st)
 {
-	// TODO: print vowel and consonant frequency
+	int total = st.vowelCount + st.consonantCount; //total letters will be sum of vowels and consonants
+	float vowFreq = (float) st.vowelCount/total;  //float cast to find frequencies
+	float consFreq = (float) st.consonantCount/total; //.2f will truncate a float to the hundred place
+	printf("Vowels = %d(%.2f%%), Consonants = %d(%.2f%%) , Total = %d\n",st.vowelCount, vowFreq, st.consonantCount, consFreq, total);
 }
 
 /**
@@ -53,8 +80,8 @@ void printVowelConsFreq(WordStats st)
  * @param st WordStats structure
  */
 void printWordCount(WordStats st)
-{
-	// TODO: prints word count
+{	int words = st.wordCount;
+	printf("Words: %d\n", words);
 }
 
 /**
@@ -62,8 +89,35 @@ void printWordCount(WordStats st)
  * @param st WordStats structure
  */
 void printHistogram(WordStats st)
-{
-	// TODO: Prints vertical histogram
+{	int temp[26];
+    memcpy(temp, st.histo, sizeof(st.histo));
+	int max = st.histo[0]; //begin with max at histo[0]
+	for(int i = 0; i < 26; i++){ 
+		if(st.histo[i]>max){ //if histo(i) > max a new max has been found so reset it
+			max = st.histo[i];
+		}
+	}
+	for(int i = 1; i <= max; i++){ //outerloop controls what will be the highest bar of the graph
+		for(int j = 0; j < 26; j++){ //inner loop goes through histo
+			if(st.histo[j]==(max-i+1)){ 
+			 printf("*"); //print a star
+			 st.histo[j]--; //decrement count at that spot
+			}else{
+			 printf(" "); //print nothing
+			}
+		}
+		printf("\n"); 
+	}
+	for(char c='a'; c<='z'; c++){ //display alphabet
+		printf("%c", c);
+	}
+	printf("\n");
+	int len = sizeof(temp)/sizeof(temp[0]);
+	for(int i = 0; i < len; i++){
+	 printf("%d", temp[i]);
+	}
+
+
 }
 
 /**
@@ -73,5 +127,13 @@ void printHistogram(WordStats st)
  */
 void updateHistogram(int histo[], const char str[])
 {
-	// TODO: updates the frequencies in the histogram, given the letters in the input string
+int len = strlen(str);
+	for(char i = 'A'; i <= 'Z'; i++){ //outer loop loops through alphabet 
+		for(int j = 0; j < len; j++){ //inner loop goes through string
+			if(str[j]==i || str[j]==i+32){ //ACIIZ lower to upper
+				histo[i-'A']++; //if the string contains the char I is at, increment that spot in histo
+			}
+		}
+	}
+
 }
